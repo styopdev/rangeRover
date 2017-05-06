@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Range Rover plugin demo</title>
+		<link rel="stylesheet" href="dist/jquery.rangerover.min.css">
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Gudea">
+
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+		<script type="text/javascript" src="dist/jquery.rangerover.min.js"></script>
+
+		<script type="text/javascript">
+			$(function() {
+				$("#range").rangeRover({
+						range: true,
+						mode: 'categorized',
+            eras: [
+                {
+                  name: 'Lenin',
+                  start: 1917,
+                  end: 1923,
+                  color: '#6d99ff',
+                  size: 20
+                },
+                {
+                  name: 'Stalin',
+                  start: 1923,
+                  end: 1953,
+                  color: '#ff0000',
+                  size: 30
+                },
+                {
+                  name: 'Khrushchev',
+                  start: 1953,
+                  end: 1964,
+                  color: '#ffcc66',
+                  size: 25
+                },
+                {
+                  name: 'Brezhnev',
+                  start: 1964,
+                  end: 1982,
+                  color: '#6bf442',
+                  size: 10
+              },
+							{
+								name: 'Dissolution',
+								start: 1982,
+								end: 1991,
+								color: '#cccccc',
+								size: 15
+						}],
+						onChange : function(val) {
+							console.log(val);
+						}
+          });
+       });
+		</script>
+	</head>
+	<body>
+		<h1> RangeRover plugin demo </h1>
+		<div>
+        <div id="range"></div>
+		</div>
+
+		<style type="text/css">
+      body {
+        background-color: #d5dde2;
+				text-align: center;
+      }
+			#range {
+			  width: 1000px;
+				margin: 0 auto;
+				margin-top: 100px;
+			}
+			* {
+				font-family: "Gudea";
+			}
+		</style>
+	</body>
+</html>
