@@ -1,10 +1,11 @@
 (function($) {
   var RangeRover = function () {
     this.options = {
-      eras: [],
+      categories: [],
       range: false,
-      mode: null,
-      autocalculate: true
+      mode: 'plain',
+      autocalculate: true,
+      color: '#e8e8e8'
     };
     this.coordinates = {
       startSkate: {
@@ -69,44 +70,48 @@
 
     this.init = function () {
       var self = this;
-      var eras = [];
-      // add specific class to slider to use its width below
-      this.selector.addClass('ds-container');
-      if (this.options.autocalculate) {
-        RangeRover.autocalculateErasSizes(this.options.eras);
+      var progressBarContent = [];
+
+      if (this.options.mode === 'plain') {
+        self.options.data.size = 100;
+        self.options.data = [this.options.data];
       }
-      console.log('this.options.eras', this.options.eras);
-      $.each(this.options.eras, function(index, era) {
-        // set eras percent size and background color to its div
-        var eraContent = '<div class="ds-era" data-era="' + index + '" style="width:' + era.size + '%; background-color:' + era.color + '"><span class="ds-era-title">' + era.name + '</span><span class="ds-era-start">' + era.start + '</span>';
-        var exludedYearsPlain = era.exclude ? DateSlider.getExcludedYearsPlain(era) : [];
+      // add specific class to slider to use its width below
+      self.selector.addClass('ds-container');
+      if (self.options.autocalculate && this.options.mode === 'categorized') {
+        RangeRover.autocalculateCategoriesSizes(self.options.data);
+      }
+      $.each(self.options.data, function(index, category) {
+        // set category's percent size and background color to its div
+        var exludedValuesPlain = category.exclude ? RangeRover.getExcludedValuesPlain(category) : [];
+        var categoryContent = '<div class="ds-category" data-category="' + index + '" style="width:' + category.size + '%; background-color:' + (category.color || self.options.color) + '"><span class="ds-category-title"></span><span class="ds-category-start">' + category.start + '</span>';
 
-        var yearsCount = era.end - era.start - exludedYearsPlain.length;
-        // calculate era px with
-        var eraWidth = self.selector.width() / 100 * era.size;
-        //  calculate year px width
-        var yearWidth = eraWidth / yearsCount;
+        var valuesCount = category.end - category.start - exludedValuesPlain.length;
+        // calculate category px width
+        var categoryWidth = self.selector.width() / 100 * category.size;
+        //  calculate value's px width
+        var valueWidth = categoryWidth / valuesCount;
 
-        for (var i = era.start; i < era.end; i++) {
-          if (~exludedYearsPlain.indexOf(i)) {
+        for (var i = category.start; i < category.end; i++) {
+          if (~exludedValuesPlain.indexOf(i)) {
               continue;
           }
           // set first element as a default
           if (!self.selected.start) {
             self.selected.start = i;
           }
-          eraContent += '<span class="ds-era-item" data-year="' + i + '" style="width:' + yearWidth + 'px"></span>';
+          categoryContent += '<span class="ds-item" data-year="' + i + '" style="width:' + valueWidth + 'px"></span>';
         }
-        if (index === self.options.eras.length - 1) {
-          eraContent += '<span class="ds-era-end">' + era.end + '</span>';
-          self.selected.end = era.end;
+        if (index === self.options.data.length - 1) {
+          categoryContent += '<span class="ds-category-end">' + category.end + '</span>';
+          self.selected.end = category.end;
         }
-        eraContent += '</div>';
-        eras.push(eraContent);
-
+        categoryContent += '</div>';
+        progressBarContent.push(categoryContent);
       });
+
       // put progressBar's with ranges, skate elements to container
-      var progressBarHtml = '<div class="ds-skate"><span class="ds-skate-year-mark">' + self.selected.start + '</span></div><div class="ds-progress">' + eras.join('') + ' </div>';
+      var progressBarHtml = '<div class="ds-skate"><span class="ds-skate-year-mark">' + self.selected.start + '</span></div><div class="ds-progress">' + progressBarContent.join('') + ' </div>';
       if (this.options.range) {
         progressBarHtml += '<div class="ds-end-skate"><span class="ds-skate-year-mark">' + self.selected.end + '</span></div>'
       }
@@ -131,38 +136,38 @@
       var skateChanged = null;
 
       if (isTriggeredFromProgressBar) {
-        if (!this.options.range) {
+        if (!self.options.range) {
           skateChanged = 'start';
         }
-        if (this.options.range && parseInt(this.endSkate.css('left'), 10) - selectedPosition < selectedPosition - parseInt(this.startSkate.css('left'), 10)) {
-          this.endSkate.css('left', selectedPosition);
+        if (self.options.range && parseInt(self.endSkate.css('left'), 10) - selectedPosition < selectedPosition - parseInt(self.startSkate.css('left'), 10)) {
+          self.endSkate.css('left', selectedPosition);
           skateChanged = 'end';
         } else {
-          this.startSkate.css('left', selectedPosition);
+          self.startSkate.css('left', selectedPosition);
           skateChanged = 'start';
         }
       } else {
-        if (!this[this.enabledSkater]) {
+        if (!self[self.enabledSkater]) {
           return;
         }
-        selectedPosition = parseInt(this[this.enabledSkater].css('left'), 10);
+        selectedPosition = parseInt(self[self.enabledSkater].css('left'), 10);
       }
       // loop through all items to find selected one
-      this.progressBar.find('.ds-era-item').each(function(index, item) {
+      self.progressBar.find('.ds-item').each(function(index, item) {
         var itemLeftOffset = $(item).offset().left - self.selector.offset().left;
         if (itemLeftOffset <= selectedPosition && itemLeftOffset + $(item).width() > selectedPosition) {
           selected = +$(item).attr('data-year');
           return false;
         }
       });
-      skateChanged = skateChanged || (this.enabledSkater ? this.enabledSkater.split('Skate')[0] : null);
+      skateChanged = skateChanged || (self.enabledSkater ? self.enabledSkater.split('Skate')[0] : null);
       // update selectedYear and call onChange if selectedYear has been changed
 
       if (selected && selected !== this.selected[skateChanged]) {
-        this.selected[skateChanged] = +selected;
-        this.updateSelectedYear();
-        if (this.options.onChange && typeof this.options.onChange === 'function') {
-          this.onChange();
+        self.selected[skateChanged] = +selected;
+        self.updateSelectedYear();
+        if (self.options.onChange && typeof self.options.onChange === 'function') {
+          self.onChange();
         }
       }
     };
@@ -205,9 +210,9 @@
 
     this.select = function (year) {
       if (year !== this.selectedYear) {
-        var yearElement = $('.ds-era-item[data-year="' + year + '"]');
+        var yearElement = $('.ds-category-item[data-year="' + year + '"]');
         if (!yearElement.length) {
-          console.warn('DateSlider -> select: element `' + year + '` is not found.');
+          console.warn('RangeRover -> select: element `' + year + '` is not found.');
           return this;
         }
         var leftPosition = yearElement.offset().left;
@@ -223,23 +228,22 @@
     }
   };
 
-  RangeRover.autocalculateErasSizes = function (eras) {
-    var totalCount = eras.reduce(function(prev, next, index) {
+  RangeRover.autocalculateCategoriesSizes = function (categories) {
+    var totalCount = categories.reduce(function(prev, next, index) {
       if (index === 1) {
         return (prev.end - prev.start) + (next.end - next.start);
       } else {
-        console.log('prev', prev);
         return prev + (next.end - next.start);
       }
     });
-    return eras.map(function(e) {
+    return categories.map(function(e) {
         e.size = 100 / totalCount * (e.end - e.start);
     });
   };
 
-  RangeRover.getExcludedYearsPlain = function (era) {
+  RangeRover.getExcludedValuesPlain = function (category) {
     var plainYears = [];
-    $.each(era.exclude, function (index, y) {
+    $.each(category.exclude, function (index, y) {
       if (typeof y === 'object' && y.start && y.end) {
         for (var i = y.start; i <= y.end; i++) {
           plainYears.push(i);
@@ -249,12 +253,23 @@
       }
     });
     return plainYears;
-  }
+  };
+
+  RangeRover.isArray = function (obj) {
+		if (Object.prototype.toString.call(obj) === '[object Array]') {
+			return true;
+		}
+	};
+
 
   $.fn.extend({
     rangeRover: function (options) {
       var slider = new RangeRover();
       slider.options = $.extend(slider.options, options);
+      if (!slider.options.data || RangeRover.isArray(slider.options.data) && !slider.options.data.length) {
+        console.warn('RangeRover -> please provide data');
+        return;
+      }
       slider.selector = $(this);
       slider.init();
 

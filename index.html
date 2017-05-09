@@ -2,19 +2,24 @@
 <html>
 	<head>
 		<title>Range Rover plugin demo</title>
-		<link rel="stylesheet" href="dist/jquery.rangerover.min.css">
+		<link rel="stylesheet" href="src/jquery.rangerover.css">
 		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Gudea">
 
 		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-		<script type="text/javascript" src="dist/jquery.rangerover.min.js"></script>
+		<script type="text/javascript" src="src/jquery.rangerover.js"></script>
 
 		<script type="text/javascript">
 			$(function() {
 				$("#range").rangeRover({
 						range: true,
-						mode: 'categorized',
-            eras: [
+						mode: 'categorized', // default plain
+						// data: {
+						// 	start: 1900,
+						// 	end: 1920,
+						// 	exlude: [{ start: 1905, end: 1908 }]
+						// },
+            data: [
                 {
                   name: 'Lenin',
                   start: 1917,
@@ -51,7 +56,7 @@
 								size: 15
 						}],
 						onChange : function(val) {
-							console.log(val);
+							console.log('val', val);
 						}
           });
        });

@@ -1,10 +1,10 @@
 .ds-container {
     position: relative;
 }
-.ds-container .ds-era-title::selection, .ds-container .ds-era-start::selection, .ds-container .ds-era-end::selection, .ds-container .ds-skate-year-mark::selection {
+.ds-container .ds-category-title::selection, .ds-container .ds-category-start::selection, .ds-container .ds-category-end::selection, .ds-container .ds-skate-year-mark::selection {
   background: none;
 }
-.ds-container .ds-era-title::-moz-selection, .ds-container .ds-era-start-moz-::selection, .ds-container .ds-era-end-moz-::selection, .ds-container .ds-skate-year-mark::-moz-selection {
+.ds-container .ds-category-title::-moz-selection, .ds-container .ds-category-start-moz-::selection, .ds-container .ds-category-end-moz-::selection, .ds-container .ds-skate-year-mark::-moz-selection {
   background: none;
 }
 .ds-progress {
@@ -37,28 +37,28 @@
   top: 47px;
   left: -10px;
 }
-.ds-era {
+.ds-category {
   position: relative;
   display: inline-block;
   z-index: 1;
   height: 100%;
 }
-.ds-era-item {
+.ds-item {
   height: 100%;
   display: inline-block;
 }
-.ds-era-title {
+.ds-category-title {
   display: inline-block;
   width: 100%;
   text-align: center;
 }
-.ds-era-start {
+.ds-category-start {
   position: absolute;
   margin-left: -15px;
   left: 0;
   top: 22px;
 }
-.ds-era-end {
+.ds-category-end {
   right: -15px;
   position: absolute;
   top: 22px;
