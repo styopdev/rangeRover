@@ -3,7 +3,7 @@ Range selection plugin for jQuery
 
 ![RangeRover usage basic example](https://cloud.githubusercontent.com/assets/6073745/25776025/c440b76e-32c3-11e7-8e65-b4a6e6ad9571.gif)
 
-How to use
+**How to use**
 
 There are several ways for rangeRover plugin installation:
 
@@ -70,29 +70,40 @@ $("#range").rangeRover({
   });
 ```
 
-### Options
+#### Options
 |  Option   | Default value  | Description  |
 |-----------|----------------|--------------|
-| range     | false             | Enable range selection, default is single selection |
-| mode      | "plain"           | Following modes are available - "categorized", "plain" |
-| data      | no default value  | Array containing range's data |
+| range     |       false      | Enable range selection, default is single selection |
+| mode      |      "plain"     | Following modes are available - "categorized", "plain" |
+| data      | no default value | array containing range's data |
 
-`data` option should be object for `mode: plain` and array of objects for `mode: categorized`.
-Following properties are required in data's object
-`start` - start number
-`end` - end number
+`data` option should be object for `mode: plain` and array of object for `mode: categorized`.
 
-Optional properties
-`name` - will be displayed on period
-`exclude` - object { start: Number, end Number } or plain Number of values which shouldn't be available for selection in plugin.
-`color` - color of period
-`size` - for `mode: categorized` it's possible to specify custom length for periods, its useful when you would like to
+**Following properties are required in data's object**
+* `start` - start number
+* `end` - end number
+* `color` - color of period
 
+**Optional properties**
+* `name` - will be displayed on period
+* `exclude` - object { start: Number, end Number } or plain Number of values which shouldn't be available for selection in plugin.
 
-
-### Events
+#### Events
 * `onChange` - called when new item selected, function receive - selected value.
 
-### Methods
+#### Methods
+* `select` - call to specify selected value.
 
-* `select` - get picker's current value, receive callback style function as an argument.
+#### Examples
+Basic example
+
+```javascript
+$("#range").rangeRover({
+    data: {
+          start: 1917,
+          end: 1923
+        }
+  });
+```
+
+![RangeRover usage basic example](https://cloud.githubusercontent.com/assets/6073745/25885202/367a3f20-3568-11e7-8927-cb95eecf9df4.gif)
