@@ -77,7 +77,7 @@ $("#range").rangeRover({
 | mode      |      "plain"     | Following modes are available - "categorized", "plain" |
 | data      | no default value | array containing range's data |
 
-`data` option should be object for `mode: plain` and array of object for `mode: categorized`.
+`data` option should be object for `mode: plain` and array of objects for `mode: categorized`.
 
 **Following properties are required in data's object**
 * `start` - start number

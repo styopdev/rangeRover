@@ -84,7 +84,7 @@
       $.each(self.options.data, function(index, category) {
         // set category's percent size and background color to its div
         var exludedValuesPlain = category.exclude ? RangeRover.getExcludedValuesPlain(category) : [];
-        var categoryContent = '<div class="ds-category" data-category="' + index + '" style="width:' + category.size + '%; background-color:' + (category.color || self.options.color) + '"><span class="ds-category-title"></span><span class="ds-category-start">' + category.start + '</span>';
+        var categoryContent = '<div class="ds-category" data-category="' + index + '" style="width:' + category.size + '%; background-color:' + (category.color || self.options.color) + '"><span class="ds-category-title">' + (category.name ? category.name : '' ) + '</span><span class="ds-category-start">' + category.start + '</span>';
 
         var valuesCount = category.end - category.start - exludedValuesPlain.length;
         // calculate category px width
