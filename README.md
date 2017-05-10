@@ -70,7 +70,7 @@ $("#range").rangeRover({
   });
 ```
 
-#### Options
+### Options
 |  Option   | Default value  | Description  |
 |-----------|----------------|--------------|
 | range     |       false      | Enable range selection, default is single selection |
@@ -88,13 +88,13 @@ $("#range").rangeRover({
 * `name` - will be displayed on period
 * `exclude` - object { start: Number, end Number } or plain Number of values which shouldn't be available for selection in plugin.
 
-#### Events
+### Events
 * `onChange` - called when new item selected, function receive - selected value.
 
-#### Methods
+### Methods
 * `select` - call to specify selected value.
 
-#### Examples
+### Examples
 Basic example
 
 ```javascript
