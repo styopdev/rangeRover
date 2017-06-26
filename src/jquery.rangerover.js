@@ -1,7 +1,6 @@
 (function($) {
   var RangeRover = function () {
     this.options = {
-      categories: [],
       range: false,
       mode: 'plain',
       autocalculate: true,
