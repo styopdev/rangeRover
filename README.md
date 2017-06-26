@@ -75,18 +75,22 @@ $("#range").rangeRover({
 |-----------|----------------|--------------|
 | range     |       false      | Enable range selection, default is single selection |
 | mode      |      "plain"     | Following modes are available - "categorized", "plain" |
+| autocalculate      | true | For categories' custom size this property should be false and size for each category should be provided |
 | data      | no default value | array containing range's data |
+| color      | #e8e8e8 | Slider's global color, gradients can be used as well |
+
 
 `data` option should be object for `mode: plain` and array of objects for `mode: categorized`.
 
 **Following properties are required in data's object**
 * `start` - start number
 * `end` - end number
-* `color` - color of period
 
 **Optional properties**
 * `name` - will be displayed on period
-* `exclude` - object { start: Number, end Number } or plain Number of values which shouldn't be available for selection in plugin.
+* `exclude` - object { start: Number, end Number } or plain array of values. These values shouldn't be available for selection in plugin
+* `color` - color of period, gradients can be used as well
+* `size` - category's custom size (percent), must use with `autocalculate: false`.
 
 ### Events
 * `onChange` - called when new item selected, function receive - selected value.
