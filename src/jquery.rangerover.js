@@ -84,7 +84,7 @@
       $.each(self.options.data, function(index, category) {
         // set category's percent size and background color to its div
         var exludedValuesPlain = category.exclude ? RangeRover.getExcludedValuesPlain(category) : [];
-        var categoryContent = '<div class="ds-category" data-category="' + index + '" style="width:' + category.size + '%; background-color:' + (category.color || self.options.color) + '"><span class="ds-category-title">' + (category.name ? category.name : '' ) + '</span><span class="ds-category-start">' + category.start + '</span>';
+        var categoryContent = '<div class="ds-category" data-category="' + index + '" style="width:' + category.size + '%;' + (category.color ? ('background:' + category.color) : '') + '"><span class="ds-category-title">' + (category.name ? category.name : '' ) + '</span><span class="ds-category-start">' + category.start + '</span>';
 
         var valuesCount = category.end - category.start - exludedValuesPlain.length;
         // calculate category px width
@@ -122,6 +122,9 @@
         this.endSkate = this.selector.find('.ds-end-skate');
       }
       this.progressBar = this.selector.find('.ds-progress');
+      if (this.options.color) {
+        this.progressBar.css('background', this.options.color);
+      }
       // prevent browser native drag
       this.selector.attr("ondragstart", 'return false');
       // calculate min left and max right coordinates to use as a border of slider
@@ -261,11 +264,11 @@
 		}
 	};
 
-
   $.fn.extend({
     rangeRover: function (options) {
       var slider = new RangeRover();
       slider.options = $.extend(slider.options, options);
+
       if (!slider.options.data || RangeRover.isArray(slider.options.data) && !slider.options.data.length) {
         console.warn('RangeRover -> please provide data');
         return;
