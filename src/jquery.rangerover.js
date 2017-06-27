@@ -4,7 +4,8 @@
       range: false,
       mode: 'plain',
       autocalculate: true,
-      color: '#e8e8e8'
+      color: '#e8e8e8',
+      step: 1
     };
     this.coordinates = {
       startSkate: {
@@ -26,7 +27,6 @@
       start: 0,
       end: 0
     };
-
     this.setEvendHandlers = function () {
       var self = this;
 
@@ -80,6 +80,7 @@
       if (self.options.autocalculate && this.options.mode === 'categorized') {
         RangeRover.autocalculateCategoriesSizes(self.options.data);
       }
+
       $.each(self.options.data, function(index, category) {
         // set category's percent size and background color to its div
         var exludedValuesPlain = category.exclude ? RangeRover.getExcludedValuesPlain(category) : [];
@@ -91,7 +92,13 @@
         //  calculate value's px width
         var valueWidth = categoryWidth / valuesCount;
 
+        var j = 0;
+
         for (var i = category.start; i < category.end; i++) {
+          j = i;
+          if (i + self.options.step - 1 > category.end) {
+              j = category.end;
+          }
           if (~exludedValuesPlain.indexOf(i)) {
               continue;
           }
@@ -99,7 +106,8 @@
           if (!self.selected.start) {
             self.selected.start = i;
           }
-          categoryContent += '<span class="ds-item" data-year="' + i + '" style="width:' + valueWidth + 'px"></span>';
+          categoryContent += '<span class="ds-item" data-year="' + j + '" style="width:' + (valueWidth * self.options.step) + 'px"></span>';
+          i = i + self.options.step - 1;
         }
         if (index === self.options.data.length - 1) {
           categoryContent += '<span class="ds-category-end">' + category.end + '</span>';
