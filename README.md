@@ -93,7 +93,7 @@ $("#range").rangeRover({
 * `size` - category's custom size (percent), must use with `autocalculate: false`.
 
 ### Events
-* `onChange` - called when new item selected, function receive - selected value.
+* `onChange` - called when new item selected, function receive - selected value(s) and category(ies) if exist.
 
 ### Methods
 * `select` - call to specify selected value.
