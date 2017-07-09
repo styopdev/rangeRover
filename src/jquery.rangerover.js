@@ -24,8 +24,9 @@
     // whether mouse/finger pressed or not
     this.enabledSkater = null;
     this.selected = {
-      start: 0,
-      end: 0
+      start: {
+        value: 0
+      }
     };
     this.setEvendHandlers = function () {
       var self = this;
@@ -84,7 +85,7 @@
       $.each(self.options.data, function(index, category) {
         // set category's percent size and background color to its div
         var exludedValuesPlain = category.exclude ? RangeRover.getExcludedValuesPlain(category) : [];
-        var categoryContent = '<div class="ds-category" data-category="' + index + '" style="width:' + category.size + '%;' + (category.color ? ('background:' + category.color) : '') + '"><span class="ds-category-title">' + (category.name ? category.name : '' ) + '</span><span class="ds-category-start">' + category.start + '</span>';
+        var categoryContent = '<div class="ds-category" data-category="' + (category.id || category.name) + '" style="width:' + category.size + '%;' + (category.color ? ('background:' + category.color) : '') + '"><span class="ds-category-title">' + (category.name ? category.name : '' ) + '</span><span class="ds-category-start">' + category.start + '</span>';
 
         var valuesCount = category.end - category.start - exludedValuesPlain.length;
         // calculate category px width
@@ -94,6 +95,12 @@
 
         var j = 0;
 
+        // set first element as a default
+        self.selected.start.value = category.start;
+        if (self.options.mode === 'categorized') {
+          self.selected.start.category = (category.id || category.name);
+        }
+
         for (var i = category.start; i < category.end; i++) {
           j = i;
           if (i + self.options.step - 1 > category.end) {
@@ -102,25 +109,28 @@
           if (~exludedValuesPlain.indexOf(i)) {
               continue;
           }
-          // set first element as a default
-          if (!self.selected.start) {
-            self.selected.start = i;
-          }
+
           categoryContent += '<span class="ds-item" data-year="' + j + '" style="width:' + (valueWidth * self.options.step) + 'px"></span>';
           i = i + self.options.step - 1;
         }
         if (index === self.options.data.length - 1) {
           categoryContent += '<span class="ds-category-end">' + category.end + '</span>';
-          self.selected.end = category.end;
+          if (self.options.range) {
+            self.selected.end = {};
+            self.selected.end.value = category.end;
+            if (self.options.mode === 'categorized') {
+              self.selected.end.category = (category.id || category.name);
+            }
+          }
         }
         categoryContent += '</div>';
         progressBarContent.push(categoryContent);
       });
 
       // put progressBar's with ranges, skate elements to container
-      var progressBarHtml = '<div class="ds-skate"><span class="ds-skate-year-mark">' + self.selected.start + '</span></div><div class="ds-progress">' + progressBarContent.join('') + ' </div>';
+      var progressBarHtml = '<div class="ds-skate"><span class="ds-skate-year-mark">' + self.selected.start.value + '</span></div><div class="ds-progress">' + progressBarContent.join('') + ' </div>';
       if (this.options.range) {
-        progressBarHtml += '<div class="ds-end-skate"><span class="ds-skate-year-mark">' + self.selected.end + '</span></div>'
+        progressBarHtml += '<div class="ds-end-skate"><span class="ds-skate-year-mark">' + self.selected.end.value + '</span></div>'
       }
 
       this.selector.html(progressBarHtml);
@@ -140,7 +150,7 @@
     };
 
     this.checkSelection = function (selectedPosition) {
-      var selected;
+      var selectedValue, selectedCategory;
       var self = this;
       var isTriggeredFromProgressBar = !!selectedPosition;
       var skateChanged = null;
@@ -164,18 +174,24 @@
       }
       // loop through all items to find selected one
       self.progressBar.find('.ds-item').each(function(index, item) {
-        var itemLeftOffset = $(item).offset().left - self.selector.offset().left;
-        if (itemLeftOffset <= selectedPosition && itemLeftOffset + $(item).width() > selectedPosition) {
-          selected = +$(item).attr('data-year');
+        item = $(item);
+        var itemLeftOffset = item.offset().left - self.selector.offset().left;
+        if (itemLeftOffset <= selectedPosition && itemLeftOffset + item.width() > selectedPosition) {
+          selectedValue = +item.attr('data-year');
+          selectedCategory = item.parent().attr('data-category');
           return false;
         }
       });
       skateChanged = skateChanged || (self.enabledSkater ? self.enabledSkater.split('Skate')[0] : null);
-      // update selectedYear and call onChange if selectedYear has been changed
+      // update selectedValue and call onChange if selectedYear has been changed
 
-      if (selected && selected !== this.selected[skateChanged]) {
-        self.selected[skateChanged] = +selected;
-        self.updateSelectedYear();
+      if (selectedValue && selectedValue !== this.selected[skateChanged].value) {
+        self.selected[skateChanged].value = +selectedValue;
+
+        if (self.options.mode === 'categorized') {
+          self.selected[skateChanged].category = selectedCategory;
+        }
+        self.updateSelectedLabels();
         if (self.options.onChange && typeof self.options.onChange === 'function') {
           self.onChange();
         }
@@ -186,7 +202,7 @@
       if (this.options.range) {
         this.options.onChange(this.selected);
       } else {
-        this.options.onChange(this.selected.start);
+        this.options.onChange(this.selected);
       }
     };
 
@@ -194,12 +210,12 @@
       this.checkSelection(pageX - $('.ds-container').offset().left);
     };
 
-    this.updateSelectedYear = function () {
+    this.updateSelectedLabels = function () {
       this.updateCoordinates();
-      this.startSkate.children('.ds-skate-year-mark').html(this.selected.start);
+      this.startSkate.children('.ds-skate-year-mark').html(this.selected.start.value);
 
       if (this.options.range) {
-        this.endSkate.children('.ds-skate-year-mark').html(this.selected.end);
+        this.endSkate.children('.ds-skate-year-mark').html(this.selected.end.value);
       }
     };
 
@@ -280,6 +296,7 @@
         console.warn('RangeRover -> please provide data');
         return;
       }
+
       slider.selector = $(this);
       slider.init();
 
