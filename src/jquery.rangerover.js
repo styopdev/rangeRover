@@ -199,11 +199,7 @@
     };
 
     this.onChange = function () {
-      if (this.options.range) {
-        this.options.onChange(this.selected);
-      } else {
-        this.options.onChange(this.selected);
-      }
+      this.options.onChange(this.selected);
     };
 
     this.progressBarSelection = function (pageX) {
