@@ -293,6 +293,16 @@
         return;
       }
 
+      if (slider.options.mode === 'plain' && (RangeRover.isArray(slider.options.data) || typeof slider.options.data != 'object')) {
+        console.warn('RangeRover -> `data` must be object in `plain` mode');
+        return;
+      }
+
+      if (slider.options.mode === 'categorized' && !RangeRover.isArray(slider.options.data)) {
+        console.warn('RangeRover -> `data` must be array in `categorized` mode');
+        return;
+      }
+
       slider.selector = $(this);
       slider.init();
 
