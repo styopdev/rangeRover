@@ -7,11 +7,11 @@ Range selection plugin for jQuery
 
 There are several ways for rangeRover plugin installation:
 
-using npm: -
++ using npm: -
 
-using bower: -
++ using bower: -
 
-download and unpack zip file from github repository.
++ download and unpack zip file from [github repository](https://github.com/styopdev/rangeRover).
 
 Load the latest version of jQuery library and plugin's files from dist folder in the html document.
 
@@ -76,11 +76,10 @@ $("#range").rangeRover({
 | range     |       false      | Enable range selection, default is single selection |
 | mode      |      "plain"     | Following modes are available - "categorized", "plain" |
 | autocalculate      | true | For categories' custom size this property should be false and size for each category should be provided |
-| data      | no default value | array containing range's data |
+| data      | no default value | object for `mode: plain` and array of objects for `mode: categorized` |
 | color      | #e8e8e8 | Slider's global color, gradients can be used as well |
+| vLabels | false | Whether or not to show values' labels |
 
-
-`data` option should be object for `mode: plain` and array of objects for `mode: categorized`.
 
 **Following properties are required in data's object**
 * `start` - start number
@@ -88,7 +87,7 @@ $("#range").rangeRover({
 
 **Optional properties**
 * `name` - will be displayed on period
-* `exclude` - object { start: Number, end Number } or plain array of values. These values shouldn't be available for selection in plugin
+* `exclude` - object { start: Number, end: Number } or plain array of values. These values will be unavailable for selection.
 * `color` - color of period, gradients can be used as well
 * `size` - category's custom size (percent), must use with `autocalculate: false`.
 
