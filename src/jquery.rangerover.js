@@ -5,7 +5,8 @@
       mode: 'plain',
       autocalculate: true,
       color: '#e8e8e8',
-      step: 1
+      step: 1,
+      vLabels: false
     };
     this.coordinates = {
       startSkate: {
@@ -110,7 +111,7 @@
               continue;
           }
 
-          categoryContent += '<span class="ds-item" data-year="' + j + '" style="width:' + (valueWidth * self.options.step) + 'px"></span>';
+          categoryContent += '<span class="ds-item" data-year="' + j + '" style="width:' + (valueWidth * self.options.step) + 'px">' + (self.options.vLabels && i != category.start && i != category.end ? i : '') + '</span>';
           i = i + self.options.step - 1;
         }
         if (index === self.options.data.length - 1) {
