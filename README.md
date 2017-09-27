@@ -110,3 +110,19 @@ $("#range").rangeRover({
 ```
 
 ![RangeRover usage basic example](https://cloud.githubusercontent.com/assets/6073745/25885202/367a3f20-3568-11e7-8927-cb95eecf9df4.gif)
+
+
+With value labels
+
+```javascript
+$("#range").rangeRover({
+    range: true,
+    vLabels: true,
+    data: {
+          start: 1,
+          end: 10
+        }
+  });
+```
+
+![RangeRover with vLabels example](https://user-images.githubusercontent.com/6073745/30932197-a519a106-a37b-11e7-80e7-323dbe3f94ad.gif)
