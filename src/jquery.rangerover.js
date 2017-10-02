@@ -4,7 +4,7 @@
       range: false,
       mode: 'plain',
       autocalculate: true,
-      color: '#e8e8e8',
+      color: '#3498db',
       step: 1,
       vLabels: false
     };
@@ -173,16 +173,26 @@
         }
         selectedPosition = parseInt(self[self.enabledSkater].css('left'), 10);
       }
-      // loop through all items to find selected one
-      self.progressBar.find('.ds-item').each(function(index, item) {
-        item = $(item);
-        var itemLeftOffset = item.offset().left - self.selector.offset().left;
-        if (itemLeftOffset <= selectedPosition && itemLeftOffset + item.width() > selectedPosition) {
-          selectedValue = +item.attr('data-year');
-          selectedCategory = item.parent().attr('data-category');
-          return false;
+      if (self.enabledSkater === 'endSkate' && selectedPosition === this.coordinates.endSkate.max) {
+        if (self.options.mode === 'categorized') {
+          selectedValue = self.options.data[self.options.data.length - 1].end;
+          selectedCategory = self.options.data[self.options.data.length - 1].name;
+        } else {
+          selectedValue = self.options.data[0].end;
         }
-      });
+      }
+      // loop through all items to find selected one
+      if (!selectedValue) {
+        self.progressBar.find('.ds-item').each(function(index, item) {
+          item = $(item);
+          var itemLeftOffset = item.offset().left - self.selector.offset().left;
+          if (itemLeftOffset <= selectedPosition && itemLeftOffset + item.width() > selectedPosition) {
+            selectedValue = +item.attr('data-year');
+            selectedCategory = item.parent().attr('data-category');
+            return false;
+          }
+        });
+      }
       skateChanged = skateChanged || (self.enabledSkater ? self.enabledSkater.split('Skate')[0] : null);
       // update selectedValue and call onChange if selectedYear has been changed
 
