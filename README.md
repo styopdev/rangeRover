@@ -126,3 +126,39 @@ $("#range").rangeRover({
 ```
 
 ![RangeRover with vLabels example](https://user-images.githubusercontent.com/6073745/30932197-a519a106-a37b-11e7-80e7-323dbe3f94ad.gif)
+
+Using gradients
+
+```javascript
+$("#range").rangeRover({
+    range: true,
+    mode: 'categorized',
+    data: [{
+      name: 'Cheap',
+      start: 200,
+      end: 500
+    },
+    {
+      name: 'Medium',
+      start: 500,
+      end: 1000
+    },
+    {
+      name: 'Expensive',
+      start: 1000,
+      end: 2000
+    }
+  ]
+});
+```
+
+```css
+.ds-progress {
+  background: -webkit-linear-gradient(left, #d0d0d0, black);
+}
+```
+
+![RangeRover with gradient](https://user-images.githubusercontent.com/6073745/31586474-63adaff0-b186-11e7-970d-94d671cd1cba.png)
+
+![RangeRover with gradient animated](https://user-images.githubusercontent.com/6073745/31586476-658c8e36-b186-11e7-9e21-6982651536bc.gif)
+
