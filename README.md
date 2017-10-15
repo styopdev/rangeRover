@@ -1,5 +1,9 @@
 # RangeRover
-Range selection plugin for jQuery
+Customizable range selection plugin for jQuery, with support of categorization, single and range selections, custom and [auto calculated](#options) sizes.
+
+![RangeRover with vLabels example](https://user-images.githubusercontent.com/6073745/30932197-a519a106-a37b-11e7-80e7-323dbe3f94ad.gif)
+
+![RangeRover with gradient animated](https://user-images.githubusercontent.com/6073745/31586476-658c8e36-b186-11e7-9e21-6982651536bc.gif)
 
 ![RangeRover usage basic example](https://cloud.githubusercontent.com/assets/6073745/25776025/c440b76e-32c3-11e7-8e65-b4a6e6ad9571.gif)
 
@@ -73,7 +77,7 @@ $("#range").rangeRover({
 ### Options
 |  Option   | Default value  | Description  |
 |-----------|----------------|--------------|
-| range     |       false      | Enable range selection, default is single selection |
+| range     |       false      | Enable range selection (start/end), default is single selection |
 | mode      |      "plain"     | Following modes are available - "categorized", "plain" |
 | autocalculate      | true | For categories' custom size this property should be false and size for each category should be provided |
 | data      | no default value | object for `mode: plain` and array of objects for `mode: categorized` |
