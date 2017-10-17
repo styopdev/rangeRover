@@ -11,9 +11,7 @@ Customizable range selection plugin for jQuery, with support of categorization, 
 
 There are several ways for rangeRover plugin installation:
 
-+ using npm: -
-
-+ using bower: -
++ using npm: `npm install rangerover`
 
 + download and unpack zip file from [github repository](https://github.com/styopdev/rangeRover).
 
@@ -165,4 +163,3 @@ $("#range").rangeRover({
 ![RangeRover with gradient](https://user-images.githubusercontent.com/6073745/31586474-63adaff0-b186-11e7-970d-94d671cd1cba.png)
 
 ![RangeRover with gradient animated](https://user-images.githubusercontent.com/6073745/31586476-658c8e36-b186-11e7-9e21-6982651536bc.gif)
-
