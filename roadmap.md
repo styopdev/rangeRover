@@ -1,0 +1,7 @@
+- [ ] Test and fix issues on all modern browsers.
+- [ ] Improve performance
+- [ ] Write more detailed documentation.
+- [ ] Make it possible to use steps.
+- [ ] Add more, well designed examples (probably in bootstrap and material colors)
+- [ ] Highlight selected area 
+- [ ] Write tests.
