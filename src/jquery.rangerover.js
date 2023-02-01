@@ -241,23 +241,42 @@
       }
     };
 
-    this.select = function (year) {
-      if (year !== this.selectedYear) {
-        var yearElement = $('.ds-category-item[data-year="' + year + '"]');
-        if (!yearElement.length) {
-          console.warn('RangeRover -> select: element `' + year + '` is not found.');
+    this.select = function (value) {
+      var mainLeft = $('.ds-container').offset().left;
+      if (typeof value === 'object') {   
+        if (value.start) {
+          this.selected.start.value = value.start;
+          var element = $('.ds-item[data-year="' + value.start + '"]');
+          if (!element.length) {
+            console.warn('RangeRover -> select: element `' + value.start + '` is not found.');
+            return this;
+          }
+          var leftPosition = element.offset().left;
+          this.startSkate.css('left', leftPosition - mainLeft);
+        }
+    
+        if (value.end) {
+          this.selected.end.value = value.start;
+          var element = $('.ds-item[data-year="' + value.start + '"]');
+          if (!element.length) {
+            console.warn('RangeRover -> select: element `' + value.start + '` is not found.');
+            return this;
+          }
+          var leftPosition = element.offset().left;
+          this.endSkate.css('left', leftPosition - mainLeft);
+        }
+      } else {
+        this.selected.start.value = value;
+        var element = $('.ds-item[data-year="' + value + '"]');
+        if (!element.length) {
+          console.warn('RangeRover -> select: element `' + value + '` is not found.');
           return this;
         }
-        var leftPosition = yearElement.offset().left;
-        this.skate.css('left', leftPosition);
-        this.selectedYear = year;
-        this.updateSelectedYear();
-
-        if (this.options.onChange && typeof this.options.onChange === 'function') {
-          this.onChange();
-        }
+        var leftPosition = element.offset().left;
+        
+        this.startSkate.css('left', leftPosition - mainLeft);
       }
-      return this;
+      this.updateSelectedLabels();
     }
   };
 
